@@ -1,0 +1,15 @@
+artifacts_root: artifacts
+
+connetion_database_details:
+
+
+
+
+data_ingestion:
+  host: localhost
+  port: 3307
+  user: root
+  password: mysecret
+  database: adashi_staging
+  sql_scrit: ../data_sql_script.sql
+  root_dir: artifacts/data_ingestion
