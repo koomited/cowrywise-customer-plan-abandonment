@@ -12,6 +12,34 @@ from typing import Any
 
 
 @ensure_annotations
+def read_sql_file(path_to_sql: Path) -> str:
+    """
+    Reads a .sql file and returns its content as a string.
+
+    Args:
+        path_to_sql (Path): Path to the SQL file.
+
+    Raises:
+        ValueError: If the SQL file is empty.
+        Exception: For other I/O errors.
+
+    Returns:
+        str: SQL query string.
+    """
+    try:
+        with open(path_to_sql, 'r', encoding='utf-8') as file:
+            query = file.read().strip()
+            if not query:
+                raise ValueError("SQL file is empty.")
+            logger.info(f"SQL file '{path_to_sql}' loaded successfully.")
+            return query
+    except Exception as e:
+        logger.error(f"Failed to read SQL file: {e}")
+        raise e
+
+
+
+@ensure_annotations
 def read_yaml(path_to_yaml: Path) -> ConfigBox:
     """reads yaml file and returns
 
