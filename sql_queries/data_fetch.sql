@@ -1,6 +1,13 @@
 SELECT 
-    P.id AS plan_id,
-    P.owner_id,
+
+    -- User profile details
+    U.gender_id,
+    U.risk_apetite,
+    U.address_city,
+    U.address_country,
+    U.fraud_score,
+    U.monthly_expense,
+    U.monthly_salary,
 
     -- Determine account type
     CASE 
@@ -40,19 +47,21 @@ LEFT JOIN
     withdrawals_withdrawal W 
     ON W.plan_id = P.id
 
--- JOIN users to filter on account age
+-- JOIN users to get user details and filter on account age
 INNER JOIN 
     users_customuser U 
     ON P.owner_id = U.id
 
 WHERE
-    -- Only include users who signed up more than 30 days ago
-    S.transaction_date IS NOT NULL OR W.amount IS NOT NULL
+    -- Only include plans with at least a transaction or withdrawal
+    (S.transaction_date IS NOT NULL OR W.amount IS NOT NULL)
     AND
+    -- Only include users who signed up more than 30 days ago
     U.date_joined < CURDATE() - INTERVAL 1 MONTH
 
 GROUP BY 
-    P.id
+    P.id,
+    P.owner_id
 
 HAVING 
     type IS NOT NULL;

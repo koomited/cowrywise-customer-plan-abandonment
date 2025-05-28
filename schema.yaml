@@ -1,1 +1,14 @@
-key: value
+COLUMNS:
+  gender_id: float64
+  risk_apetite: int64
+  address_city: object
+  address_country: object
+  fraud_score: int64
+  monthly_expense: float64
+  monthly_salary: float64
+  type: object
+  last_transaction_date: object
+  inactivity_days: int64
+  total_transactions: int64
+  total_transaction_amount: float64
+  total_withdrawn_amount: float64

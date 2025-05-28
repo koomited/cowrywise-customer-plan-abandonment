@@ -15,5 +15,6 @@ Flask-Cors
 SQLAlchemy 
 pymysql
 mysql-connector-python
+seaborn
 -e . # for setup.py
 # for local development
