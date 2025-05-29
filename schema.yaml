@@ -12,3 +12,7 @@ COLUMNS:
   total_transactions: int64
   total_transaction_amount: float64
   total_withdrawn_amount: float64
+
+
+TARGET_COLUMN:
+  name: plan_abondonment

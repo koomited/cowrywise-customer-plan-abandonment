@@ -16,5 +16,6 @@ SQLAlchemy
 pymysql
 mysql-connector-python
 seaborn
+xgboost
 -e . # for setup.py
 # for local development

@@ -87,4 +87,6 @@ GROUP BY
 HAVING 
     type IS NOT NULL;
 ```
-We 
+That would be great to include variables like  address_city, 
+    address_country in our model but they are full of missing values, 47.05% and 71% respectively.
+Also not surprising, there is a high correlation between monthly expenses and salary. In this study we keep monthely expenses because strongly related to our focus to predict plan abandonment. Furthermore, we want be using last transaction date in the model.
