@@ -1,5 +1,12 @@
 # cowrywise-customer-plan-abandonment
-Predicting customer plan abondonment
+Predicting Cowrywise customer plan abondonment
+
+# Problem
+
+One key insight observed during the exploration of Cowrywise customer data is that nearly 60% (specifically, 58.97%) of customer plans have had no transactions for over one year (365 days). These inactive plans carry a significant risk of being abandoned by the customers. This poses a potential waste of time and resources for both the company and its clients.
+
+To mitigate this risk, we propose defining plans with over 365 days of inactivity as either abandoned or at high risk of abandonment. Based on this definition, we aim to develop a machine learning model that predicts the likelihood of a plan being abandoned. With such a predictive tool, the company can proactively assess the viability of customer plans and more effectively guide clients toward plans that are better aligned with their goals. This project focuses on enabling that capability.
+
 
 ## Workflows
 

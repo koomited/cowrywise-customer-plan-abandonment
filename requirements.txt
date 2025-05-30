@@ -17,5 +17,6 @@ pymysql
 mysql-connector-python
 seaborn
 xgboost
+streamlit
 -e . # for setup.py
 # for local development
