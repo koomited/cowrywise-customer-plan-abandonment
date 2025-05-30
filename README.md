@@ -163,7 +163,7 @@ Push changes to the `main` branch to trigger this workflow automatically.
 To run the Docker image locally or on your server, use this command:
 
 ```bash
-docker run -d --name plan-abandonment -p 8080:8080 your-dockerhub-username/cowrywise-customer-plan-abandonment:latest
+docker run -d --name plan-abandonment -p 8080:8080 tousside/cowrywise-customer-plan-abandonment:latest
 ```
 ```bash
 Acess the UI on your browser using localhost:8080
