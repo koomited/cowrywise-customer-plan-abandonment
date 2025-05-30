@@ -26,7 +26,20 @@ Predicting Cowrywise customer plan abondonment
 
 One key insight observed during the exploration of Cowrywise customer data is that nearly 60% (specifically, 58.97%) of customer plans have had no transactions for over one year (365 days). These inactive plans carry a significant risk of being abandoned by the customers. This poses a potential waste of time and resources for both the company and its clients.
 
-To mitigate this risk, we propose defining plans with over 365 days of inactivity as either abandoned or at high risk of abandonment. Based on this definition, we aim to develop a machine learning model that predicts the likelihood of a plan being abandoned. With such a predictive tool, the company can proactively assess the viability of customer plans and more effectively guide clients toward plans that are better aligned with their goals. This project focuses on enabling that capability. An api is built with flask and can be used to integrated the model directely in your system. A small UI is built to allow interactions with the model.
+To mitigate this risk, we propose defining plans with over 365 days of inactivity as either abandoned or at high risk of abandonment. Based on this definition, we aim to develop a machine learning model that predicts the likelihood of a plan being abandoned. With such a predictive tool, the company can proactively assess the viability of customer plans and more effectively guide clients toward plans that are better aligned with their goals. This project focuses on enabling that capability. 
+
+## 🔑 Key Features
+
+- Build XGBoost Model
+- Model Inference Flask API
+- User Interface (UI)
+- Dockerized Application
+- Published Docker Image
+- CI/CD with GitHub Actions
+- Production-ready Deployment
+- Extensibility
+- Environment Portability
+
 
 
 ## Workflows
@@ -123,7 +136,38 @@ export MLFLOW_TRACKING_PASSWORD=b918e1b0fdebad41476188587e7a2996300c6ee2
 ```
 Make sure you replace the credentials by yours.
 
-# Dockerhub CI/CD Deployment with GitHub Actions
+# DockerHub CI/CD Workflow
+
+This GitHub Actions workflow automates the build and push of a Docker image to Docker Hub whenever code is pushed to the `main` branch.
+
+## Workflow steps
+
+1. Checkout the repository code.
+2. Log in to Docker Hub using secrets.
+3. Build a Docker image tagged as `your-dockerhub-username/cowrywise-customer-plan-abandonment:latest`.
+4. Push the Docker image to Docker Hub.
+
+## Setup
+
+- Create a Docker Hub repository named `cowrywise-customer-plan-abandonment`.
+- Add the following GitHub Secrets in your repository settings:
+  - `DOCKERHUB_USERNAME`: Your Docker Hub username.
+  - `DOCKERHUB_PASSWORD`: Your Docker Hub password or access token.
+
+## Usage
+
+Push changes to the `main` branch to trigger this workflow automatically.
+
+## Run the deploy image locally
+
+To run the Docker image locally or on your server, use this command:
+
+```bash
+docker run -d --name plan-abandonment -p 8080:8080 your-dockerhub-username/cowrywise-customer-plan-abandonment:latest
+```
+```bash
+Acess the UI on your browser using localhost:8080
+```
 
 # GCP CI/CD Deployment with GitHub Actions
 
@@ -211,3 +255,5 @@ gcloud auth configure-docker asia-south1-docker.pkg.dev
 ##  Future works
 - For now, I have not tested the deployement because of lack of credit on gcp. But I will do it very soon.
 - Automate model monitoring and retrain model if performance decreased.
+- Flask backend is modular and easy to expand (e.g., adding new routes or model versions).
+- UI can be enhanced or replaced with a React or Vue frontend if needed.
