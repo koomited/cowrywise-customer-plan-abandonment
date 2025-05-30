@@ -1,5 +1,23 @@
 # cowrywise-customer-plan-abandonment
 Predicting Cowrywise customer plan abondonment
+---
+
+[![Linux](https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black)](#)
+[![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?logo=visual-studio-code&logoColor=white)](#)
+[![GitHub](https://img.shields.io/badge/GitHub-%23121011.svg?logo=github&logoColor=white)](#)
+[![Git](https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white)](#)
+[![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)](#)
+[![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)](#)
+[![phpMyAdmin](https://img.shields.io/badge/phpMyAdmin-6C78AF?logo=phpmyadmin&logoColor=white)](#)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](#)
+[![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white)](#)
+[![Flask](https://img.shields.io/badge/Flask-000000?logo=flask&logoColor=white)](#)
+[![DagsHub](https://img.shields.io/badge/DagsHub-FF6A00?logo=dagsHub&logoColor=white)](#)
+![Awesome](https://img.shields.io/badge/Awesome-ffd700?logo=awesome&logoColor=black)
+
+---
+![Project Screenshot](https://www.internationalaccountingbulletin.com/wp-content/uploads/sites/9/2023/11/shutterstock_22739995191.jpg)
+
 
 # Problem
 
@@ -20,111 +38,26 @@ To mitigate this risk, we propose defining plans with over 365 days of inactivit
 8. Update the main.py
 9. Update the app.py
 
-In this study, we assume any plan without transaction for more than 365 day is more likely to be abandoned.
-Find below the commmented sql query used to featch the data used.
-
-
-
-```sql
-SELECT 
-
-    -- User profile details
-    U.gender_id,
-    U.risk_apetite,
-    U.address_city,
-    U.address_country,
-    U.fraud_score,
-    U.monthly_expense,
-    U.monthly_salary,
-
-    -- Determine account type
-    CASE 
-        WHEN P.is_regular_savings = 1 THEN 'Savings'
-        WHEN P.is_a_fund = 1 THEN 'Investment'
-        ELSE NULL
-    END AS type,
-
-    -- Last transaction date
-    MAX(S.transaction_date) AS last_transaction_date,
-
-    -- Days since last transaction or since plan start_date if no transaction
-    DATEDIFF(
-        CURDATE(), 
-        COALESCE(MAX(S.transaction_date), P.start_date)
-    ) AS inactivity_days,
-
-    -- Total number of transactions per plan
-    COUNT(DISTINCT S.id) AS total_transactions,
-
-    -- Total confirmed amount of all transactions per plan
-    COALESCE(SUM(S.confirmed_amount), 0) AS total_transaction_amount,
-
-    -- Total amount withdrawn per plan
-    COALESCE(SUM(W.amount_withdrawn), 0) AS total_withdrawn_amount
-
-FROM 
-    plans_plan P
-
--- LEFT JOIN to include plans with zero transactions
-LEFT JOIN 
-    savings_savingsaccount S 
-    ON S.plan_id = P.id 
-
--- LEFT JOIN to include plans with or without withdrawals
-LEFT JOIN 
-    withdrawals_withdrawal W 
-    ON W.plan_id = P.id
-
--- JOIN users to get user details and filter on account age
-INNER JOIN 
-    users_customuser U 
-    ON P.owner_id = U.id
-
-WHERE
-    -- Only include plans with at least a transaction or withdrawal
-    (S.transaction_date IS NOT NULL OR W.amount IS NOT NULL)
-    AND
-    -- Only include users who signed up more than 30 days ago
-    U.date_joined < CURDATE() - INTERVAL 1 MONTH
-
-GROUP BY 
-    P.id,
-    P.owner_id
-
-HAVING 
-    type IS NOT NULL;
-```
-That would be great to include variables like  address_city, 
-    address_country in our model but they are full of missing values, 47.05% and 71% respectively.
-Also not surprising, there is a high correlation between monthly expenses and salary. In this study we keep monthely expenses because strongly related to our focus to predict plan abandonment. Furthermore, we want be using last transaction date in the model.
-
-
-
-
-
-
-
-
-
 
 
 
 # How to run?
 ### STEPS:
 
+
 Clone the repository
 
 ```bash
-https://github.com/entbappy/End-to-end-Machine-Learning-Project-with-MLflow
+https://github.com/koomited/cowrywise-customer-plan-abandonment.git
 ```
 ### STEP 01- Create a conda environment after opening the repository
 
 ```bash
-conda create -n mlproj python=3.8 -y
+python3 -m venv venv
 ```
 
 ```bash
-conda activate mlproj
+source venv/bin/activate
 ```
 
 
@@ -138,11 +71,23 @@ pip install -r requirements.txt
 # Finally run the following command
 python app.py
 ```
-
 Now,
 ```bash
 open up you local host and port
 ```
+
+
+In Case you want to try training
+```bash
+# run the containers to create the database and tables
+docker compose up -d
+```
+Then 
+```bash
+# run the main.py
+python main.py
+```
+
 
 
 
