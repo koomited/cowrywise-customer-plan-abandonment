@@ -1,0 +1,15 @@
+artifact_uri: file:///home/tousside/Documents/recrutement/cowrywise-customer-plan-abandonment/mlruns/0/bba980c69cb84ee490c3616672b978af/artifacts
+end_time: 1748579655042
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: bba980c69cb84ee490c3616672b978af
+run_name: serious-slug-679
+run_uuid: bba980c69cb84ee490c3616672b978af
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748579652744
+status: 3
+tags: []
+user_id: tousside

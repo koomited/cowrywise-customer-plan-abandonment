@@ -34,6 +34,3 @@ class DataTransformation:
         logger.info("Splited data into training and test sets")
         logger.info(train.shape)
         logger.info(test.shape)
-
-        print(train.shape)
-        print(test.shape)

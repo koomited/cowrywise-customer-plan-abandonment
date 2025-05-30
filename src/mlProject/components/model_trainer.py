@@ -29,9 +29,7 @@ class ModelTrainer:
 
 
         train_x = train_data.drop([self.config.target_column], axis=1)
-        test_x = test_data.drop([self.config.target_column], axis=1)
         train_y = train_data[[self.config.target_column]]
-        test_y = test_data[[self.config.target_column]]
         
         # gender_id , and type as categorical variables
         categorical_cols = ["gender_id", "type"]
