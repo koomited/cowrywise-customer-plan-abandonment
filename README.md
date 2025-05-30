@@ -1,5 +1,6 @@
 # cowrywise-customer-plan-abandonment
 Predicting Cowrywise customer plan abondonment
+
 ---
 
 [![Linux](https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black)](#)
@@ -13,9 +14,11 @@ Predicting Cowrywise customer plan abondonment
 [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white)](#)
 [![Flask](https://img.shields.io/badge/Flask-000000?logo=flask&logoColor=white)](#)
 [![DagsHub](https://img.shields.io/badge/DagsHub-FF6A00?logo=dagsHub&logoColor=white)](#)
+[![Google Cloud](https://img.shields.io/badge/Google%20Cloud-4285F4?logo=googlecloud&logoColor=white)](#)
 ![Awesome](https://img.shields.io/badge/Awesome-ffd700?logo=awesome&logoColor=black)
 
 ---
+
 ![Project Screenshot](https://www.internationalaccountingbulletin.com/wp-content/uploads/sites/9/2023/11/shutterstock_22739995191.jpg)
 
 
@@ -23,7 +26,7 @@ Predicting Cowrywise customer plan abondonment
 
 One key insight observed during the exploration of Cowrywise customer data is that nearly 60% (specifically, 58.97%) of customer plans have had no transactions for over one year (365 days). These inactive plans carry a significant risk of being abandoned by the customers. This poses a potential waste of time and resources for both the company and its clients.
 
-To mitigate this risk, we propose defining plans with over 365 days of inactivity as either abandoned or at high risk of abandonment. Based on this definition, we aim to develop a machine learning model that predicts the likelihood of a plan being abandoned. With such a predictive tool, the company can proactively assess the viability of customer plans and more effectively guide clients toward plans that are better aligned with their goals. This project focuses on enabling that capability.
+To mitigate this risk, we propose defining plans with over 365 days of inactivity as either abandoned or at high risk of abandonment. Based on this definition, we aim to develop a machine learning model that predicts the likelihood of a plan being abandoned. With such a predictive tool, the company can proactively assess the viability of customer plans and more effectively guide clients toward plans that are better aligned with their goals. This project focuses on enabling that capability. An api is built with flask and can be used to integrated the model directely in your system. A small UI is built to allow interactions with the model.
 
 
 ## Workflows
@@ -118,89 +121,93 @@ export MLFLOW_TRACKING_USERNAME=koomi
 export MLFLOW_TRACKING_PASSWORD=b918e1b0fdebad41476188587e7a2996300c6ee2
 
 ```
+Make sure you replace the credentials by yours.
+
+# Dockerhub CI/CD Deployment with GitHub Actions
+
+# GCP CI/CD Deployment with GitHub Actions
+
+This README provides step-by-step instructions for setting up CI/CD deployment on Google Cloud Platform using GitHub Actions.
+
+## 1. Login to Google Cloud Console
+
+## 2. Create Service Account for deployment
+#with specific access
+1. Compute Engine access: For virtual machine management
+2. Artifact Registry: To save your docker image in GCP
+3. Cloud Run: For containerized application deployment (optional)
+
+#Description: About the deployment
+1. Build docker image of the source code
+2. Push your docker image to Artifact Registry
+3. Launch Your Compute Engine VM
+4. Pull Your image from Artifact Registry in VM
+5. Launch your docker image in VM
+
+#Required Roles:
+1. Artifact Registry Administrator
+2. Compute Admin
+3. Service Account User
+4. Storage Admin
+
+## 3. Create Artifact Registry repository to store/save docker image
+- Navigate to Artifact Registry > Create Repository
+- Choose Docker format
+- Save the repository URL: `REGION-docker.pkg.dev/PROJECT-ID/REPO-NAME`
+- Example: `asia-south1-docker.pkg.dev/my-project-12345/mlproj`
+
+## 4. Create Compute Engine VM (Ubuntu)
+- Choose appropriate machine type
+- Allow HTTP/HTTPS traffic
+- Note the external IP address
+
+## 5. Open VM and Install docker in Compute Engine:
+#optional
+```bash
+sudo apt-get update -y
+sudo apt-get upgrade -y
+```
+
+#required
+```bash
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+#Install Google Cloud CLI
+```bash
+curl https://sdk.cloud.google.com | bash
+exec -l $SHELL
+gcloud init
+```
+
+## 6. Configure VM as self-hosted runner:
+settings > actions > runner > new self hosted runner > choose os > then run command one by one
+
+## 7. Setup GitHub secrets:
+```
+GCP_PROJECT_ID=your-project-id
+GCP_SA_KEY=<service-account-json-key-base64-encoded>
+GCP_REGION=asia-south1
+ARTIFACT_REGISTRY_URL=asia-south1-docker.pkg.dev/your-project-id
+REPOSITORY_NAME=mlproj
+VM_INSTANCE_NAME=your-vm-name
+VM_ZONE=asia-south1-a
+```
+
+## 8. Authentication setup:
+- Create service account key (JSON format)
+- Base64 encode the JSON key: `cat key.json | base64`
+- Add the encoded key to GitHub secrets as `GCP_SA_KEY`
+
+## 9. Configure Artifact Registry authentication on VM:
+```bash
+gcloud auth configure-docker asia-south1-docker.pkg.dev
+```
 
 
-
-# AWS-CICD-Deployment-with-Github-Actions
-
-## 1. Login to AWS console.
-
-## 2. Create IAM user for deployment
-
-	#with specific access
-
-	1. EC2 access : It is virtual machine
-
-	2. ECR: Elastic Container registry to save your docker image in aws
-
-
-	#Description: About the deployment
-
-	1. Build docker image of the source code
-
-	2. Push your docker image to ECR
-
-	3. Launch Your EC2 
-
-	4. Pull Your image from ECR in EC2
-
-	5. Lauch your docker image in EC2
-
-	#Policy:
-
-	1. AmazonEC2ContainerRegistryFullAccess
-
-	2. AmazonEC2FullAccess
-
-	
-## 3. Create ECR repo to store/save docker image
-    - Save the URI: 566373416292.dkr.ecr.ap-south-1.amazonaws.com/mlproj
-
-	
-## 4. Create EC2 machine (Ubuntu) 
-
-## 5. Open EC2 and Install docker in EC2 Machine:
-	
-	
-	#optinal
-
-	sudo apt-get update -y
-
-	sudo apt-get upgrade
-	
-	#required
-
-	curl -fsSL https://get.docker.com -o get-docker.sh
-
-	sudo sh get-docker.sh
-
-	sudo usermod -aG docker ubuntu
-
-	newgrp docker
-	
-# 6. Configure EC2 as self-hosted runner:
-    setting>actions>runner>new self hosted runner> choose os> then run command one by one
-
-
-# 7. Setup github secrets:
-
-    AWS_ACCESS_KEY_ID=
-
-    AWS_SECRET_ACCESS_KEY=
-
-    AWS_REGION = us-east-1
-
-    AWS_ECR_LOGIN_URI = demo>>  566373416292.dkr.ecr.ap-south-1.amazonaws.com
-
-    ECR_REPOSITORY_NAME = simple-app
-
-
-
-
-## About MLflow 
-MLflow
-
- - Its Production Grade
- - Trace all of your expriements
- - Logging & tagging your model
-
+##  Future works
+- For now, I have not tested the deployement because of lack of credit on gcp. But I will do it very soon.
+- Automate model monitoring and retrain model if performance decreased.
